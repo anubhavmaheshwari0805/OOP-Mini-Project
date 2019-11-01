@@ -1,5 +1,7 @@
 #include<iostream>
 #include<string.h>
+#include<conio.h>
+#include<iomanip>
 #define m 20
 using namespace std;
 class person
@@ -66,7 +68,7 @@ class person
 		}
 		void showarray(int i)
 		{
-			cout<<paid[i]<<"-"<<htp[i];
+			cout<<paid[i]<<"-"<<htp[i]<<setw(10);
 		}
 		void showtotal()
 		{
@@ -81,6 +83,13 @@ class person
 			cout<<thtp;
 		}
 };
+void line()
+    {
+            for(int i=1;i<41;i++)
+          cout<<"--";
+
+     cout<<"\n";
+   }
 int main()
 {
 	int n;
@@ -113,10 +122,13 @@ int main()
 		cout<<i+1<<" -\t";
 		p[i].displaycode();
 	}
+	line();
 	char reason[m][m];
 	i=0;
 	int n1,n2;
 	float bill[m],tbill=0,paid,part;
+	line();
+	line();
 	cout<<i+1<<"-Enter Reason ( if finished write 'end' ) : ";
 	cin>>reason[i];
 	while(strcmp(reason[i],"end\0"))
@@ -216,42 +228,43 @@ int main()
 	{
 	    p[i].calculate(r);
     }
-    cout<<"|  Reason  |  ";
+    cout<<setw(20)<<"Reason"<<setw(20);
     for(i=0;i<n;i++)
     {
         p[i].displayname();
-        cout<<"  |  ";
+        cout<<setw(12);
     }
-    cout<<"Bills  |"<<endl;
+    cout<<setw(20)<<"Bills  "<<endl;
     for(i=0;i<r;i++)
     {
-    	cout<<"|  "<<reason[i]<<"  |  ";
+    	cout<<setw(20)<<reason[i]<<setw(20);
     	for(j=0;j<n;j++)
-    	{
+    	{	
+    		cout<<setw(13);
     	    p[j].showarray(i);
-    	    cout<<"  |  ";
+    	    cout<<setw(13);
         }
-        cout<<bill[i]<<"  |"<<endl;
+        cout<<setw(20)<<bill[i]<<endl;
 	}
-	cout<<"| Total Expenses |  ";
+	cout<<setw(20)<<"Total Expenses"<<setw(20);
 	for(i=0;i<n;i++)
 	{
 		p[i].showtotal();
-		cout<<"  |  ";
+		cout<<setw(12);
 	}
-	cout<<tbill<<"  |"<<endl;
-	cout<<"|      Paid      |  ";
+	cout<<setw(20)<<tbill<<endl;
+	cout<<setw(20)<<"Paid"<<setw(20);
 	for(i=0;i<n;i++)
 	{
 		p[i].showpaid();
-		cout<<"  |  ";
+		cout<<setw(12);
 	}
 	cout<<endl;
-	cout<<"|  Have to Pay   |  ";
+	cout<<setw(20)<<"Have to Pay"<<setw(20);
 	for(i=0;i<n;i++)
 	{
 		p[i].showhtp();
-		cout<<"  |  ";
+		cout<<setw(12);
 	}
 	cout<<endl;
 	return 0;
