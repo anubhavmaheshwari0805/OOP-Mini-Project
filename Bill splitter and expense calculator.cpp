@@ -82,6 +82,14 @@ class person
 			cout<<thtp;
 		}
 };
+void isnum(int i)
+{
+	if(i==0)
+	{
+		cout<<"ERROR! : You entered a character or 0.\nQuiting...\n";
+		exit(0);
+	}
+}
 void line()
     {
         for(int i=1;i<41;i++)
@@ -93,15 +101,18 @@ int main()
 	int n;
 	cout<<"Enter the no. of peoples : ";
 	cin>>n;
+	isnum(n);
 	person p[n];
 	char name[20];
 	int code,i,j,k;
-	cout<<"Enter the names with a numeric integral code : "<<endl;
+	line();
+	cout<<"Enter the names with a numeric integral code(except 0) : "<<endl;
 	for(i=0;i<n;i++)
 	{
 		cout<<i+1<<" - ";
 		cin>>name;
 		cin>>code;
+		jump1: isnum(code);
 		for(j=0;j<i;j++)
 		{
 			k=p[j].check(name,code);
@@ -111,23 +122,26 @@ int main()
 			cin>>code;
 			else if(k==3)
 			cin>>name>>code;
+			if(k==1||k==2||k==3)
+			goto jump1;
 		}
 		p[i].read(name,code);
 	}
+	line();
+	line();
 	cout<<"Person's name with their name code (Use these codes for entries) : "<<endl;
 	for(i=0;i<n;i++)
 	{
 		cout<<i+1<<" -\t";
 		p[i].displaycode();
 	}
-	line();
 	char reason[m][m];
 	i=0;
 	int n1,n2;
 	float bill[m],tbill=0,paid,part;
 	line();
 	line();
-	cout<<i+1<<"-Enter Reason ( if finished write 'end' ) : ";
+	cout<<i+1<<"-Enter Reason ( if finished, write 'end' ) : ";
 	cin>>reason[i];
 	while(strcmp(reason[i],"end\0"))
 	{
@@ -136,12 +150,14 @@ int main()
 			p[j].init(i);
 		}
 		bill[i]=0;
-		cout<<"    Enter no. of peoples who paid (if all paid equally then enter 0 ) : ";
-		jump1 : cin>>n1;
-		if(n1==0)
+		cout<<"----Enter no. of peoples who paid (if all paid equally then enter -1 ) : ";
+		jump2 : cin>>n1;
+		isnum(n1);
+		if(n1==-1)
 		{
-			cout<<"      Enter amount paid per person : ";
-			jump2: cin>>paid;
+			cout<<"------Enter amount paid per person : ";
+			cin>>paid;
+			isnum(paid);
 			for(k=0;k<n;k++)
 			{
 			    p[k].amountpaid(paid,i);
@@ -152,7 +168,7 @@ int main()
 		{
 		    for(j=0;j<n1;j++)
 		    {
-				cout<<"      Enter namecode of person : ";
+				cout<<"------Enter namecode of person : ";
 			    jump3: cin>>code;
 				for(k=0;k<n;k++)
 				{
@@ -161,11 +177,12 @@ int main()
 				}
 				if(k==n)
 				{
-					cout<<"      ERROR! : Enter a valid namecode : ";
+					cout<<"------ERROR! : Enter a valid namecode : ";
 					goto jump3;
 				}
-				cout<<"      Enter amount paid by "<<code<<" : ";
-			    jump4: cin>>paid;
+				cout<<"------Enter amount paid by "<<code<<" : ";
+			    cin>>paid;
+				isnum(paid);
 			    for(k=0;k<n;k++)
 			    {
 				    if(p[k].code==code)
@@ -179,12 +196,12 @@ int main()
 	    }
 		else
 		{
-			cout<<"    ERROR! : Enter a valid number : ";
-            goto jump1;
+			cout<<"----ERROR! : Enter a valid number : ";
+            goto jump2;
 		}
-		cout<<"    Enter no. of peoples whose amount is paid (for all, enter 0 or "<<n<<" ): ";
-		jump5: cin>>n2;
-		if(n2==0||n2==n)
+		cout<<"----Enter no. of peoples whose amount is paid (for all, enter -1 or "<<n<<" ): ";
+		jump4: cin>>n2;
+		if(n2==-1||n2==n)
 		{
 			for(k=0;k<n;k++)
 		    p[k].amounthtp(bill[i]/n,i);
@@ -193,8 +210,8 @@ int main()
 		{
 		    for(j=0;j<n2;j++)
 			{
-				cout<<"      Enter name code of person : ";
-				jump6: cin>>code;
+				cout<<"------Enter name code of person : ";
+				jump5: cin>>code;
 				for(k=0;k<n;k++)
 				{
 					if(p[k].code==code)
@@ -202,8 +219,8 @@ int main()
 				}
 				if(k==n)
 				{
-					cout<<"      ERROR! : Enter a valid namecode : ";
-					goto jump6;
+					cout<<"------ERROR! : Enter a valid namecode : ";
+					goto jump5;
 				}
 		        for(k=0;k<n;k++)
 		        {
@@ -217,12 +234,12 @@ int main()
 		}
 		else
 		{
-			cout<<"    ERROR! : Enter a valid number : ";
-			goto jump5;
+			cout<<"----ERROR! : Enter a valid number : ";
+			goto jump4;
 		}
 	    tbill+=bill[i];
 	    i++;
-	    cout<<i+1<<"-Enter Reason ( if finished enter 'end' ) : ";
+	    cout<<i+1<<"-Enter Reason ( if finished, enter 'end' ) : ";
 		cin>>reason[i];
 	}
 	int r=i;
