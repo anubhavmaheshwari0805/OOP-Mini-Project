@@ -2,7 +2,7 @@
 #include<string.h>
 #include<conio.h>
 #include<iomanip>
-#define m 30
+#define m 20
 using namespace std;
 class person
 {
@@ -102,7 +102,8 @@ int main()
 	for(i=0;i<n;i++)
 	{
 		cout<<i+1<<" - ";
-		cin>>name>>code;
+		cin>>name;
+		cin>>code;
 		for(j=0;j<i;j++)
 		{
 			k=p[j].check(name,code);
@@ -122,99 +123,104 @@ int main()
 		p[i].displaycode();
 	}
 	line();
-	cout<<"\t*****IMPORTANT INSTRUCTION FOR ENTRIES*****"<<endl;
-	cout<<"~~ In 'Reason' column , write the reason of paying in single string."<<endl;
-	cout<<"~~ In 'No._of_payers' column , write the no. of payers who are paying the bill."<<endl;
-	cout<<"   ~ If all are paying equally then write 0 ."<<endl;
-	cout<<"   ~ If all are paying but not equally then write total no. of peoples."<<endl;
-	cout<<"~~ In 'Name_code - Amount' column , write the name code of payers with amount they paid respectively."<<endl;
-	cout<<"   ~ If all are paying equally then write only amount price that paid individually."<<endl;
-	cout<<"~~ In 'no._of_beneficials' column , write the no. of persons whose bill is paid."<<endl;
-	cout<<"   ~ If the bill is paying for all then write 0 or total no. peoples."<<endl;
-	cout<<"~~ In last 'Name_code' column , write the name code of beneficials."<<endl;
-	cout<<"   ~ If all are beneficials then write nothing and continue."<<endl;
-	cout<<"~~ Write 'end' when the entries are finished."<<endl;
-	cout<<"Examples :"<<endl;
-	cout<<"~ aaa 0 amount 0 \\ Bill is paid by all."<<endl;
-	cout<<"~ bbb 0 amount 3 2 4 6 \\ 2,4,6's Bill is paid by all."<<endl;
-	cout<<"~ ccc 2 1 am1 3 am2 0 \\ 1 and 3 paid the bill of all with amount am1,am2 respectively."<<endl;
-	cout<<"~ ddd 3 3 am1 4 am2 6 am3 4 2 3 4 6 \\ 2,3,4,6's bill is paid by 3,4,6 with amount am1,am2,am3 respectively."<<endl;
 	char reason[m][m];
 	i=0;
 	int n1,n2;
 	float bill[m],tbill=0,paid,part;
 	line();
 	line();
-	cout<<"Reason | No._of_payers(n1) | [Name_code - Amount](n1_times) | no._of_beneficials(n2) | Name_code(n2_times)"<<endl;	cout<<i+1<<" -\t";
-	//cout<<setw(10)<<"Reason"<<setw(20)<<"| No._of_payers(n1) |"<<setw(40)<<" [Name_code - Amount](n1_times) "<<setw(40)<<"| no._of_beneficials(n2) |"<<setw(40)<<" Name_code(n2_times)"<<setw(40)<<endl;	cout<<i+1<<" -\t";
-
+	cout<<i+1<<"-Enter Reason ( if finished write 'end' ) : ";
 	cin>>reason[i];
 	while(strcmp(reason[i],"end\0"))
 	{
 		bill[i]=0;
-		cin>>n1;
+		cout<<"    Enter no. of peoples who paid (if all paid equally then enter 0 ) : ";
+		jump1 : cin>>n1;
 		if(n1==0)
 		{
-			cin>>paid;
+			cout<<"      Enter amount paid per person : ";
+			jump2: cin>>paid;
 			for(k=0;k<n;k++)
 			{
 			    p[k].amountpaid(paid,i);
 			    bill[i]+=paid;
 		    }
-			cin>>n2;
-			if(n2==0||n2==n)
-			{
-				for(k=0;k<n;k++)
-			    p[k].amounthtp(bill[i]/n,i);
-			}
-			else
-			{
-				for(j=0;j<n2;j++)
-				{
-					cin>>code;
-			        for(k=0;k<n;k++)
-			        {
-			        	if(p[k].code==code)
-			        	p[k].amounthtp(bill[i]/n2,i);
-					}
-			    }
-			}
 		}
-		else
+		else if(n1>0&&n1<=n)
 		{
 		    for(j=0;j<n1;j++)
 		    {
-			    cin>>code;
-			    cin>>paid;
+				cout<<"      Enter namecode of person : ";
+			    jump3: cin>>code;
+				for(k=0;k<n;k++)
+				{
+					if(p[k].code==code)
+					break;
+				}
+				if(k==n)
+				{
+					cout<<"      ERROR! : Enter a valid namecode : ";
+					goto jump3;
+				}
+				cout<<"      Enter amount paid by "<<code<<" : ";
+			    jump4: cin>>paid;
 			    for(k=0;k<n;k++)
 			    {
 				    if(p[k].code==code)
-				    p[k].amountpaid(paid,i);
+					{
+                        p[k].amountpaid(paid,i);
+						break;
+					}
 		    	}
 			    bill[i]+=paid;
 		    }
-		    cin>>n2;
-		    if(n2==0||n2==n)
-		    {
-		    	for(k=0;k<n;k++)
-			    p[k].amounthtp(bill[i]/n,i);
-		    }
-		    else
-			{
-		        for(j=0;j<n2;j++)
-		        {
-			        cin>>code;
-			        for(k=0;k<n;k++)
-			        {
-				        if(p[k].code==code)
-				        p[k].amounthtp(bill[i]/n2,i);
-			        }
-		        }
-	        }
 	    }
+		else
+		{
+			cout<<"    ERROR! : Enter a valid number : ";
+            goto jump1;
+		}
+		cout<<"    Enter no. of peoples whose amount is paid (for all, enter 0 or "<<n<<" ): ";
+		jump5: cin>>n2;
+		if(n2==0||n2==n)
+		{
+			for(k=0;k<n;k++)
+		    p[k].amounthtp(bill[i]/n,i);
+		}
+		else if(n2>0&&n2<n)
+		{
+		    for(j=0;j<n2;j++)
+			{
+				cout<<"      Enter name code of person : ";
+				jump6: cin>>code;
+				for(k=0;k<n;k++)
+				{
+					if(p[k].code==code)
+					break;
+				}
+				if(k==n)
+				{
+					cout<<"      ERROR! : Enter a valid namecode : ";
+					goto jump6;
+				}
+		        for(k=0;k<n;k++)
+		        {
+		        	if(p[k].code==code)
+					{
+                        p[k].amounthtp(bill[i]/n2,i);
+						break;
+					}
+				}
+		    }
+		}
+		else
+		{
+			cout<<"    ERROR! : Enter a valid number : ";
+			goto jump5;
+		}
 	    tbill+=bill[i];
 	    i++;
-	    cout<<i+1<<" -\t";
+	    cout<<i+1<<"-Enter Reason ( if finished enter 'end' ) : ";
 		cin>>reason[i];
 	}
 	int r=i;
