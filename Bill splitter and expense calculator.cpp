@@ -1,6 +1,5 @@
 #include<iostream>
 #include<string.h>
-#include<conio.h>
 #include<iomanip>
 #define m 20
 using namespace std;
@@ -85,11 +84,10 @@ class person
 };
 void line()
     {
-            for(int i=1;i<41;i++)
-          cout<<"--";
-
-     cout<<"\n";
-   }
+        for(int i=1;i<41;i++)
+        cout<<"--";
+        cout<<"\n";
+    }
 int main()
 {
 	int n;
