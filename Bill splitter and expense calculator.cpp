@@ -3,6 +3,44 @@
 #include<iomanip>
 #define m 20
 using namespace std;
+void line(char ch,int n)
+{
+    for(int i=0;i<n;i++)
+    cout<<ch;
+    cout<<"\n";
+}
+template <class X> void set(X x,int n)
+{
+    int i=0;
+    X temp=x;
+	if(x==0)
+	i++;
+    while(temp!=0)
+    {
+        i++;
+        temp=int(temp/10);
+    }
+    int len=i;
+	if(x<0)
+	len++;
+    int l=(n-len)/2;
+    for(i=0;i<l;i++)
+	cout<<" ";
+	cout<<setprecision(len)<<x;
+	for(i=0;i<(n-len-l);i++)
+	cout<<" ";
+}
+void set(char s[],int n)
+{
+	int i=0;
+	int l=strlen(s);
+    int x=(n-l)/2;
+	for(i=0;i<x;i++)
+	cout<<" ";
+	cout<<s;
+	for(i=0;i<(n-x-l);i++)
+	cout<<" ";
+}
 class person
 {
 	protected:
@@ -42,11 +80,14 @@ class person
 		}
 		void displayname()
 		{
-			cout<<name;
+			set(name,15);
 		}
 		void displaycode()
 		{
-			cout<<name<<"\t-\t"<<code<<endl;
+			set(name,15);
+			cout<<"->";
+			set(code,10);
+			cout<<endl;
 		}
 		void amountpaid(float i,int r)
 		{
@@ -67,19 +108,21 @@ class person
 		}
 		void showarray(int i)
 		{
-			cout<<paid[i]<<"-"<<htp[i]<<setw(10);
+			set(paid[i],7);
+			cout<<"|";
+			set(htp[i],7);
 		}
 		void showtotal()
 		{
-			cout<<total;
+			set(total,15);
 		}
 		void showpaid()
 		{
-			cout<<tpaid;
+			set(tpaid,15);
 		}
 		void showhtp()
 		{
-			cout<<thtp;
+			set(thtp,15);
 		}
 };
 void isnum(int i)
@@ -90,12 +133,6 @@ void isnum(int i)
 		exit(0);
 	}
 }
-void line()
-    {
-        for(int i=1;i<41;i++)
-        cout<<"--";
-        cout<<"\n";
-    }
 int main()
 {
 	int n;
@@ -105,7 +142,7 @@ int main()
 	person p[n];
 	char name[20];
 	int code,i,j,k;
-	line();
+	line('-',66);
 	cout<<"Enter the names with a numeric integral code(except 0) : "<<endl;
 	for(i=0;i<n;i++)
 	{
@@ -127,20 +164,19 @@ int main()
 		}
 		p[i].read(name,code);
 	}
-	line();
-	line();
+	line('=',66);
 	cout<<"Person's name with their name code (Use these codes for entries) : "<<endl;
 	for(i=0;i<n;i++)
 	{
-		cout<<i+1<<" -\t";
+		set(i+1,7);
+		cout<<"-";
 		p[i].displaycode();
 	}
 	char reason[m][m];
 	i=0;
 	int n1,n2;
 	float bill[m],tbill=0,paid,part;
-	line();
-	line();
+	line('=',64);
 	cout<<i+1<<"-Enter Reason ( if finished, write 'end' ) : ";
 	cin>>reason[i];
 	while(strcmp(reason[i],"end\0"))
@@ -247,44 +283,67 @@ int main()
 	{
 	    p[i].calculate(r);
     }
-    cout<<setw(20)<<"Reason"<<setw(20);
+	line('=',15*n+2*n+36);
+	cout<<"||";
+	char c1[20]="Reason";
+    set(c1,20);
+	cout<<"||";
     for(i=0;i<n;i++)
     {
         p[i].displayname();
-        cout<<setw(12);
+        cout<<"||";
     }
-    cout<<setw(20)<<"Bills  "<<endl;
+	char c2[10]="Bills";
+    set(c2,10);
+	cout<<"||"<<endl;
+	line('=',15*n+2*n+36);
     for(i=0;i<r;i++)
     {
-    	cout<<setw(20)<<reason[i]<<setw(20);
+		cout<<"||";
+    	set(reason[i],20);
+		cout<<"||";
     	for(j=0;j<n;j++)
-    	{	
-    		cout<<setw(13);
-    	    p[j].showarray(i);
-    	    cout<<setw(13);
-        }
-        cout<<setw(20)<<bill[i]<<endl;
+		{
+            p[j].showarray(i);
+			cout<<"||";
+		}
+        set(bill[i],10);
+		cout<<"||"<<endl;
+		line('=',15*n+2*n+36);
 	}
-	cout<<setw(20)<<"Total Expenses"<<setw(20);
+	cout<<"||";
+	char c3[20]="Total Expenses";
+	set(c3,20);
+	cout<<"||";
 	for(i=0;i<n;i++)
 	{
-		p[i].showtotal();
-		cout<<setw(12);
+        p[i].showtotal();
+		cout<<"||";
 	}
-	cout<<setw(20)<<tbill<<endl;
-	cout<<setw(20)<<"Paid"<<setw(20);
+	set(tbill,10);
+	cout<<"||"<<endl;
+	line('=',15*n+2*n+36);
+	cout<<"||";
+	char c4[20]="Paid";
+	set(c4,20);
+	cout<<"||";
 	for(i=0;i<n;i++)
 	{
-		p[i].showpaid();
-		cout<<setw(12);
+        p[i].showpaid();
+		cout<<"||";
 	}
 	cout<<endl;
-	cout<<setw(20)<<"Have to Pay"<<setw(20);
+	line('=',(15*n+2*n+24));
+	cout<<"||";
+	char c5[20]="Have to Pay";
+	set(c5,20);
+	cout<<"||";
 	for(i=0;i<n;i++)
 	{
-		p[i].showhtp();
-		cout<<setw(12);
+        p[i].showhtp();
+		cout<<"||";
 	}
 	cout<<endl;
+	line('=',15*n+2*n+24);
 	return 0;
 }
